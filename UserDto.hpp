@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QString>
 
-class UserDto : public QObject
+class UserDto
+        : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
@@ -13,6 +14,7 @@ class UserDto : public QObject
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
 public:
     explicit UserDto(QObject *parent = 0);
+
     QString username() const;
     void setUsername(const QString &username);
 
