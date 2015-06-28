@@ -100,6 +100,8 @@ ApplicationWindow {
 
         Tab {
             title: "User management";
+            anchors.margins: 10;
+            Layout.alignment: Qt.AlignTop;
             RowLayout {
                 Item {
                     id: userAddPanel;

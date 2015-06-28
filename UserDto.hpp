@@ -18,8 +18,8 @@ public:
     QString username() const;
     void setUsername(const QString &username);
 
-    QString Password() const;
-    void setPassword(const QString &Password);
+    QString password() const;
+    void setPassword(const QString &password);
 
     quint64 id() const;
     void setId(const quint64 &id);
@@ -34,7 +34,7 @@ private:
     bool m_active;
 signals:
     void usernameChanged ();
-    void passworChanged ();
+    void passwordChanged ();
     void idChanged ();
     void activeChanged ();
 };

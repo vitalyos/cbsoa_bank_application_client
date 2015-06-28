@@ -14,15 +14,15 @@ void UserDto::setUsername(const QString &username)
     m_username = username;
     emit usernameChanged();
 }
-QString UserDto::Password() const
+QString UserDto::password() const
 {
     return m_Password;
 }
 
-void UserDto::setPassword(const QString &Password)
+void UserDto::setPassword(const QString &password)
 {
-    m_Password = Password;
-    emit passworChanged();
+    m_Password = password;
+    emit passwordChanged();
 }
 quint64 UserDto::id() const
 {
