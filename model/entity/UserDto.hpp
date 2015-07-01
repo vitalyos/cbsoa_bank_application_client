@@ -12,7 +12,7 @@ class UserDto
     Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
     Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordChanged)
     Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
-    Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
+    Q_PROPERTY(int userId READ id WRITE setId NOTIFY idChanged)
 public:
     explicit UserDto(QObject *parent = 0);
 

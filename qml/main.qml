@@ -2,6 +2,8 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
+import edu.bbu.bank 1.0
+
 ApplicationWindow {
     id: root;
     visible: true
@@ -26,5 +28,13 @@ ApplicationWindow {
         TransactionTab {
             id: transactionTab;
         }
+    }
+
+    UserController {
+        id: userController;
+    }
+
+    UserModel {
+        id: userModel;
     }
 }
