@@ -1,6 +1,3 @@
-HEADERS += \
-    $$PWD/RestUserClient.hpp \
-    $$PWD/JsonRestUserClient.hpp
+HEADERS +=
 
-SOURCES += \
-    $$PWD/JsonRestUserClient.cpp
+SOURCES +=

@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets
+QT += qml quick widgets network
 QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/ConfigurationTab.qml</file>
         <file>qml/main.qml</file>
         <file>qml/TransactionTab.qml</file>
         <file>qml/UserManagementTab.qml</file>

@@ -7,7 +7,7 @@ ApplicationWindow {
     visible: true
     width: 1024
     height: 768
-    title: qsTr("Hello World")
+    title: "Bank Management Application"
     property int labelwidth: 150;
     property int fieldWidth: 250;
 
@@ -15,12 +15,9 @@ ApplicationWindow {
     signal userAdded (string username, string password, bool active);
 
     TabView {
+        id: mainTabView;
         anchors.fill: parent;
         anchors.margins: 10;
-
-        ConfigurationTab {
-            id: configTab;
-        }
 
         UserManagementTab {
             id: userMgmtTab;
