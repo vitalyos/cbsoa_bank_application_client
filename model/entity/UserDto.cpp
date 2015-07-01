@@ -1,5 +1,11 @@
 #include "UserDto.hpp"
 
+QString UserDto::s_usernameKey = "Username";
+QString UserDto::s_passwordKey = "Password";
+QString UserDto::s_activeKey = "Active";
+QString UserDto::s_idKey = "Id";
+QString UserDto::s_errorKey = "Error";
+
 UserDto::UserDto(QObject *parent) : QObject(parent)
 {
 
@@ -45,7 +51,21 @@ void UserDto::setActive(bool active)
     emit activeChanged();
 }
 
+void UserDto::fromJsonObject(const QJsonObject &source)
+{
+    m_username = source[s_usernameKey].toString();
+    m_Password = source[s_passwordKey].toString();
+    m_active = source[s_activeKey].toBool();
+    m_id = source[s_idKey].toInt();
+    m_error = source[s_errorKey].toString();
+}
 
-
-
-
+QJsonObject UserDto::toJsonObject() const
+{
+    QJsonObject destination;
+    destination.insert(s_usernameKey, m_username);
+    destination.insert(s_passwordKey, m_Password);
+    destination.insert(s_activeKey, m_active);
+    destination.insert(s_idKey, m_id);
+    return destination;
+}

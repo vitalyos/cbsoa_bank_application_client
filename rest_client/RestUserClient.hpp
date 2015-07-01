@@ -3,6 +3,8 @@
 
 #include "model/entity/UserDto.hpp"
 
+#include <QList>
+
 class RestUserClient {
 public:
     virtual ~RestUserClient () = default;
