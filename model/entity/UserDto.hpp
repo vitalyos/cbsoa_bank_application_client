@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QJsonObject>
 
 class UserDto
         : public QObject
@@ -28,21 +27,11 @@ public:
     bool active() const;
     void setActive(bool active);
 
-    void fromJsonObject (const QJsonObject &source);
-    QJsonObject toJsonObject () const;
-
 private:
     QString m_username;
     QString m_Password;
-    QString m_error;
-    int m_id;
+    quint64 m_id;
     bool m_active;
-
-    static QString s_usernameKey;
-    static QString s_passwordKey;
-    static QString s_idKey;
-    static QString s_activeKey;
-    static QString s_errorKey;
 signals:
     void usernameChanged ();
     void passwordChanged ();
