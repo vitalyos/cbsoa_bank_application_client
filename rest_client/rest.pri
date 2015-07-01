@@ -1,3 +1,7 @@
-HEADERS +=
+HEADERS += \
+    $$PWD/UserModel.hpp \
+    $$PWD/UserController.hpp
 
-SOURCES +=
+SOURCES += \
+    $$PWD/UserModel.cpp \
+    $$PWD/UserController.cpp

@@ -8,8 +8,8 @@ ApplicationWindow {
     width: 1024
     height: 768
     title: "Bank Management Application"
-    property int labelwidth: 150;
-    property int fieldWidth: 250;
+    property int labelwidth: 120;
+    property int fieldWidth: 180;
 
     signal configurationChanged (string addr, int port, string resource);
     signal userAdded (string username, string password, bool active);
