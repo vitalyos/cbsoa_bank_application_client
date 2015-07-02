@@ -3,26 +3,27 @@
 
 #include <QObject>
 #include <QList>
+#include <QVariant>
 
 #include "model/entity/UserDto.hpp"
 
-using UserList = QList<UserDto*>;
+using UserList = QList<QObject*>;
 class QNetworkAccessManager;
 class QNetworkReply;
 
 class UserModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(UserList users READ users WRITE setUsers NOTIFY usersChanged)
+    Q_PROPERTY(QVariant users READ users WRITE setUsers NOTIFY usersChanged)
 public:
     explicit UserModel(QObject *parent = 0);
     ~UserModel ();
 
-    UserList users() const;
-    void setUsers(const UserList &users);
+    QVariant users() const;
+    void setUsers(const QVariant &users);
 
 private:
-    UserList m_users;
+    QVariant m_users;
     static QString s_resourceName;
 
     QNetworkAccessManager * m_getAllManager;

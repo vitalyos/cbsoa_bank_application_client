@@ -26,22 +26,14 @@ UserModel::~UserModel ()
     delete m_getAllManager;
 }
 
-UserList UserModel::users() const
+QVariant UserModel::users() const
 {
     return m_users;
 }
 
-void UserModel::setUsers(const UserList &users)
+void UserModel::setUsers(const QVariant &users)
 {
     m_users = users;
-    qDebug () << "got" << users.size() << "users";
-    for (const auto & user : users)
-    {
-        qDebug () << "#" << user->id()
-                  << "username" << user->username()
-                  << ", password:" << user->password()
-                  << ", active:" << user->active();
-    }
     emit usersChanged();
 }
 
@@ -85,5 +77,5 @@ void UserModel::parseGetAllRequest(QNetworkReply *response)
         result << user;
     }
 
-    setUsers(result);
+    setUsers(qVariantFromValue(result));
 }

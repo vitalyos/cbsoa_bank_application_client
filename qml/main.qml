@@ -71,12 +71,66 @@ ApplicationWindow {
                 id: btnUserAdd;
                 text: "add user";
                 enabled: false;
+                anchors.bottomMargin: 30;
                 onClicked: {
                     root.userAdded(fieldUsername.text,
                                    fieldPassword.text,
                                    cbActive.checked)
                 }
             }
+
+            ListView {
+                id: usersList;
+                model: userModel.users;
+                Layout.preferredHeight: 550;
+                Layout.preferredWidth: 300;
+                focus: true;
+                delegate: Component {
+                    id: userDelegate;
+                    Item {
+                        id: delegateRoot;
+                        height: 100;
+                        ColumnLayout {
+                            RowLayout {
+                                Label {
+                                    id: userIdLabel;
+                                    text: "#" + model.modelData.userId;
+                                    anchors.rightMargin: 10;
+                                }
+                                TextField {
+                                    id: userNameInput;
+                                    text: model.modelData.username;
+                                    Layout.preferredWidth: 230;
+                                }
+                                CheckBox {
+                                    id:activeCb;
+                                    checked: model.modelData.active;
+                                    text: "Active";
+                                }
+                            }
+
+                            RowLayout {
+                                TextField {
+                                    id: passwordInput;
+                                    text: model.modelData.password;
+                                    Layout.preferredWidth: 240;
+                                }
+                                Button {
+                                    id: updateBtn;
+                                    text: "~";
+                                    Layout.preferredWidth: 30;
+                                }
+                                Button {
+                                    id: deleteBtn;
+                                    text: "-";
+                                    Layout.preferredWidth: 30;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
 
             Binding {
                 target: btnUserAdd;
@@ -97,63 +151,6 @@ ApplicationWindow {
             }
 
         }
-
-        ListView {
-            id: usersList;
-
-            anchors.top: parent.bottom;
-            anchors.bottom: parent.bottom;
-            anchors.right: parent.right;
-
-            model: userModel.users;
-
-            delegate: Component {
-                id: userDelegate;
-                Item {
-                    id: delegateRoot;
-                    height: 200;
-                    Label {
-                        id: userIdLabel;
-                        text: "#" + userId;
-                        anchors.top: delegateRoot.top;
-                        anchors.left: delegateRoot.left;
-                    }
-                    TextInput {
-                        id: userNameInput;
-                        text: username;
-                        anchors.top: delegateRoot.top;
-                        anchors.left: userIdLabel.right;
-                    }
-                    CheckBox {
-                        id:activeCb;
-                        checked: active;
-                        text: "Active";
-                        anchors.left: delegateRoot.left;
-                        anchors.top: userNameInput.bottom;
-                    }
-                    TextInput {
-                        id: passwordInput;
-                        text: password;
-                        anchors.top: userNameInput.bottom;
-                        anchors.left: activeCb.right;
-                        anchors.right: updateBtn.left;
-                    }
-                    Button {
-                        id: updateBtn;
-                        text: "~";
-                        anchors.top: userNameInput.bottom;
-                        anchors.right: deleteBtn.left;
-                    }
-                    Button {
-                        id: deleteBtn;
-                        text: "-";
-                        anchors.top: userNameInput.bottom;
-                        anchors.right: delegateRoot.left;
-                    }
-                }
-            }
-        }
-
     }
 
     UserController {
