@@ -64,12 +64,20 @@ void UserModel::deleteUser(const qint32 &id)
 
 void UserModel::updateUser(UserDto *user)
 {
-
+    QUrl url(UserModel::s_resourceName);
+    QNetworkRequest request;
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    m_getAllManager->post(request, QJsonDocument(user->toJsonObject()).toJson());
 }
 
 void UserModel::createUser(UserDto *user)
 {
-
+    QUrl url(UserModel::s_resourceName);
+    QNetworkRequest request;
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    m_getAllManager->put(request, QJsonDocument(user->toJsonObject()).toJson());
 }
 
 void UserModel::parseGetAllResponse(QNetworkReply *response)

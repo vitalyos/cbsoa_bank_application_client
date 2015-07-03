@@ -16,8 +16,10 @@ ApplicationWindow {
 
     signal configurationChanged (string addr, int port, string resource);
     signal userAdded (string username, string password, bool active);
+
     signal deleteUser (int id);
     signal refreshUserList ();
+    signal createUser (User user);
 
     RowLayout {
         id: rows;
@@ -77,10 +79,16 @@ ApplicationWindow {
                     text: "add user";
                     enabled: false;
                     anchors.bottomMargin: 30;
+
+                    User {
+                        id: creatingUser;
+                        username: fieldUsername.text;
+                        password: fieldPassword.text;
+                        active: cbActive.checked;
+                    }
+
                     onClicked: {
-                        root.userAdded(fieldUsername.text,
-                                       fieldPassword.text,
-                                       cbActive.checked)
+                        root.createUser (creatingUser);
                     }
                 }
 
@@ -186,6 +194,10 @@ ApplicationWindow {
 
         // refresh on startup
         root.refreshUserList ();
+
+        // create user
+        root.createUser.connect(userController.createUser);
+        userController.requireCreateUser.connect(userModel.createUser);
 
         // delete user connections
         root.deleteUser.connect(userController.deleteUser);
