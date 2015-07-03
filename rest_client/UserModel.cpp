@@ -28,8 +28,6 @@ UserModel::UserModel(QObject *parent) : QObject(parent)
     connect(m_deleteManager, &QNetworkAccessManager::finished, this, &UserModel::parseDeleteResponse);
 
     connect(this, &UserModel::userListNeedToBeUpdated, this, &UserModel::userListRequired);
-
-    emit userListRequired();
 }
 
 UserModel::~UserModel ()
@@ -78,6 +76,7 @@ void UserModel::parseGetAllResponse(QNetworkReply *response)
 {
     UserList result;
     QByteArray data = response->readAll();
+    qDebug () << "getAllResponse:" << data;
     QJsonParseError error;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data, &error);
     for (const auto & userObj : jsonDoc.array())
@@ -92,21 +91,27 @@ void UserModel::parseGetAllResponse(QNetworkReply *response)
 
 void UserModel::parseGetByIdResponse(QNetworkReply *response)
 {
-
+    QByteArray data = response->readAll();
+    qDebug () << "getByIdResponse:" << data;
 }
 
 void UserModel::parseCreateResponse(QNetworkReply *response)
 {
+    QByteArray data = response->readAll();
+    qDebug () << "createResponse:" << data;
 
+    emit userListRequired();
 }
 
 void UserModel::parseUpdateResponse(QNetworkReply *response)
 {
-
+    QByteArray data = response->readAll();
+    qDebug () << "updateResponse:" << data;
+    emit userListRequired();
 }
 
 void UserModel::parseDeleteResponse(QNetworkReply *response)
 {
-    qDebug () << response->readAll()
+    qDebug () << "deleteResponse" << response->readAll();
     emit userListRequired();
 }

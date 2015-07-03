@@ -6,9 +6,10 @@ import edu.bbu.bank 1.0
 
 ApplicationWindow {
     id: root;
-    visible: true
-    width: 1024
-    height: 768
+    visible: true;
+    width: 1024;
+    height: 768;
+
     title: "Bank Management Application"
     property int labelwidth: 120;
     property int fieldWidth: 180;
@@ -16,6 +17,7 @@ ApplicationWindow {
     signal configurationChanged (string addr, int port, string resource);
     signal userAdded (string username, string password, bool active);
     signal deleteUser (int id);
+    signal refreshUserList ();
 
     RowLayout {
         id: rows;
@@ -68,16 +70,28 @@ ApplicationWindow {
                 }
             }
 
-            Button {
-                id: btnUserAdd;
-                text: "add user";
-                enabled: false;
-                anchors.bottomMargin: 30;
-                onClicked: {
-                    root.userAdded(fieldUsername.text,
-                                   fieldPassword.text,
-                                   cbActive.checked)
+            RowLayout {
+
+                Button {
+                    id: btnUserAdd;
+                    text: "add user";
+                    enabled: false;
+                    anchors.bottomMargin: 30;
+                    onClicked: {
+                        root.userAdded(fieldUsername.text,
+                                       fieldPassword.text,
+                                       cbActive.checked)
+                    }
                 }
+
+                Button {
+                    id: refreshButton;
+                    text: "refresh";
+                    onClicked: {
+                        root.refreshUserList ();
+                    }
+                }
+
             }
 
             ListView {
@@ -166,6 +180,13 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        // refresh
+        root.refreshUserList.connect(userController.refreshUserList);
+        userController.requireRefreshUserList.connect(userModel.userListRequired);
+
+        // refresh on startup
+        root.refreshUserList ();
+
         // delete user connections
         root.deleteUser.connect(userController.deleteUser);
         userController.requireDeleteUser.connect(userModel.deleteUser);

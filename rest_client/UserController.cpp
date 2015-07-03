@@ -9,3 +9,8 @@ void UserController::deleteUser(const qint32 &id)
 {
     emit requireDeleteUser(id);
 }
+
+void UserController::refreshUserList()
+{
+    emit requireRefreshUserList();
+}

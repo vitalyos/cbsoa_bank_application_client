@@ -11,8 +11,10 @@ public:
 
 signals:
     void requireDeleteUser (const qint32 &id);
+    void requireRefreshUserList ();
 public slots:
     void deleteUser (const qint32 &id);
+    void refreshUserList ();
 };
 
 #endif // USERCONTROLLER_HPP
