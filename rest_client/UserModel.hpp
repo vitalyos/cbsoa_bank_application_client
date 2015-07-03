@@ -27,16 +27,25 @@ private:
     static QString s_resourceName;
 
     QNetworkAccessManager * m_getAllManager;
+    QNetworkAccessManager * m_getByIdManager;
+    QNetworkAccessManager * m_createManager;
+    QNetworkAccessManager * m_updateManager;
+    QNetworkAccessManager * m_deleteManager;
 signals:
     void usersChanged ();
+    void userListNeedToBeUpdated ();
 public slots:
-    void userListRequred ();
+    void userListRequired ();
     void deleteUser (const qint32 &id);
     void updateUser (UserDto * user);
     void createUser (UserDto * user);
 
 private slots:
-    void parseGetAllRequest (QNetworkReply * response);
+    void parseGetAllResponse (QNetworkReply * response);
+    void parseGetByIdResponse (QNetworkReply * response);
+    void parseCreateResponse (QNetworkReply * response);
+    void parseUpdateResponse (QNetworkReply * response);
+    void parseDeleteResponse (QNetworkReply * response);
 };
 
 #endif // USERMODEL_HPP
