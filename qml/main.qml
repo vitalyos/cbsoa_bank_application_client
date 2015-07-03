@@ -14,9 +14,6 @@ ApplicationWindow {
     property int labelwidth: 120;
     property int fieldWidth: 180;
 
-    signal configurationChanged (string addr, int port, string resource);
-    signal userAdded (string username, string password, bool active);
-
     signal deleteUser (int id);
     signal refreshUserList ();
     signal createUser (User user);
