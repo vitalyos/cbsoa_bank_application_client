@@ -15,6 +15,7 @@ ApplicationWindow {
 
     signal configurationChanged (string addr, int port, string resource);
     signal userAdded (string username, string password, bool active);
+    signal deleteUser (int id);
 
     RowLayout {
         id: rows;
@@ -124,6 +125,9 @@ ApplicationWindow {
                                     id: deleteBtn;
                                     text: "-";
                                     Layout.preferredWidth: 30;
+                                    onClicked: {
+                                        root.deleteUser(model.modelData.userId);
+                                    }
                                 }
                             }
                         }
@@ -159,5 +163,11 @@ ApplicationWindow {
 
     UserModel {
         id: userModel;
+    }
+
+    Component.onCompleted: {
+        // delete user connections
+        root.deleteUser.connect(userController.deleteUser);
+        userController.requireDeleteUser.connect(userModel.deleteUser);
     }
 }

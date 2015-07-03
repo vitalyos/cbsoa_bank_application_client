@@ -5,3 +5,7 @@ UserController::UserController(QObject *parent) : QObject(parent)
 
 }
 
+void UserController::deleteUser(const qint32 &id)
+{
+    emit requireDeleteUser(id);
+}

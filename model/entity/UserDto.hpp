@@ -22,20 +22,20 @@ public:
     QString password() const;
     void setPassword(const QString &password);
 
-    quint64 id() const;
-    void setId(const quint64 &id);
-
     bool active() const;
     void setActive(bool active);
 
     void fromJsonObject (const QJsonObject &source);
     QJsonObject toJsonObject () const;
 
+    qint32 id() const;
+    void setId(const qint32 &id);
+
 private:
     QString m_username;
     QString m_Password;
     QString m_error;
-    int m_id;
+    qint32 m_id;
     bool m_active;
 
     static QString s_usernameKey;

@@ -58,7 +58,10 @@ void UserModel::userListRequired()
 
 void UserModel::deleteUser(const qint32 &id)
 {
-
+    QUrl url(UserModel::s_resourceName + "/" + QString::number(id));
+    QNetworkRequest request;
+    request.setUrl(url);
+    m_deleteManager->deleteResource(request);
 }
 
 void UserModel::updateUser(UserDto *user)
@@ -104,5 +107,6 @@ void UserModel::parseUpdateResponse(QNetworkReply *response)
 
 void UserModel::parseDeleteResponse(QNetworkReply *response)
 {
-
+    qDebug () << response->readAll()
+    emit userListRequired();
 }
