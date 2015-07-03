@@ -18,6 +18,10 @@ void UserController::refreshUserList()
 
 void UserController::createUser(UserDto *user)
 {
-    qDebug () << "user" << user->username();
     emit requireCreateUser(user);
+}
+
+void UserController::updateUser(UserDto *user)
+{
+    emit requireUpdateUser(user);
 }

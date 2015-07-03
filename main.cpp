@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 void registerTypes()
 {
-    qmlRegisterType<UserDto>("edu.bbu.bank", 1, 0, "User");
+    qmlRegisterType<UserDto>("edu.bbu.bank", 1, 0, "UserDto");
     qmlRegisterType<UserModel>("edu.bbu.bank", 1, 0, "UserModel");
     qmlRegisterType<UserController>("edu.bbu.bank", 1, 0, "UserController");
 }

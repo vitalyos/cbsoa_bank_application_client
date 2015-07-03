@@ -68,7 +68,7 @@ void UserModel::updateUser(UserDto *user)
     QNetworkRequest request;
     request.setUrl(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    m_getAllManager->post(request, QJsonDocument(user->toJsonObject()).toJson());
+    m_updateManager->post(request, QJsonDocument(user->toJsonObject()).toJson());
 }
 
 void UserModel::createUser(UserDto *user)
@@ -77,7 +77,7 @@ void UserModel::createUser(UserDto *user)
     QNetworkRequest request;
     request.setUrl(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    m_getAllManager->put(request, QJsonDocument(user->toJsonObject()).toJson());
+    m_createManager->put(request, QJsonDocument(user->toJsonObject()).toJson());
 }
 
 void UserModel::parseGetAllResponse(QNetworkReply *response)
@@ -115,7 +115,7 @@ void UserModel::parseUpdateResponse(QNetworkReply *response)
 {
     QByteArray data = response->readAll();
     qDebug () << "updateResponse:" << data;
-    emit userListRequired();
+//    emit userListRequired();
 }
 
 void UserModel::parseDeleteResponse(QNetworkReply *response)

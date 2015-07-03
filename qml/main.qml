@@ -16,7 +16,8 @@ ApplicationWindow {
 
     signal deleteUser (int id);
     signal refreshUserList ();
-    signal createUser (User user);
+    signal createUser (UserDto user);
+    signal updateUser (UserDto user);
 
     RowLayout {
         id: rows;
@@ -77,7 +78,7 @@ ApplicationWindow {
                     enabled: false;
                     anchors.bottomMargin: 30;
 
-                    User {
+                    UserDto {
                         id: creatingUser;
                         username: fieldUsername.text;
                         password: fieldPassword.text;
@@ -139,6 +140,18 @@ ApplicationWindow {
                                     id: updateBtn;
                                     text: "~";
                                     Layout.preferredWidth: 30;
+
+                                    UserDto {
+                                        id: updateDto;
+                                        userId:  model.modelData.userId;
+                                        password: passwordInput.text;
+                                        username:  userNameInput.text;
+                                        active: activeCb.checked;
+                                    }
+
+                                    onClicked: {
+                                        root.updateUser (updateDto);
+                                    }
                                 }
                                 Button {
                                     id: deleteBtn;
@@ -185,6 +198,10 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        // create user
+        root.createUser.connect(userController.createUser);
+        userController.requireCreateUser.connect(userModel.createUser);
+
         // refresh
         root.refreshUserList.connect(userController.refreshUserList);
         userController.requireRefreshUserList.connect(userModel.userListRequired);
@@ -192,9 +209,9 @@ ApplicationWindow {
         // refresh on startup
         root.refreshUserList ();
 
-        // create user
-        root.createUser.connect(userController.createUser);
-        userController.requireCreateUser.connect(userModel.createUser);
+        // update
+        root.updateUser.connect(userController.updateUser);
+        userController.requireUpdateUser.connect(userModel.updateUser);
 
         // delete user connections
         root.deleteUser.connect(userController.deleteUser);
