@@ -1,5 +1,15 @@
 #include "TransactionDto.hpp"
 
+QString TransactionDto::s_idField = "Id";
+QString TransactionDto::s_dateTimeField = "DateTime";
+QString TransactionDto::s_locationField = "InitFromLocation";
+QString TransactionDto::s_amountField = "Amount";
+QString TransactionDto::s_sourceAccountField = "Account";
+QString TransactionDto::s_currencyValueField = "CurrencyValue";
+QString TransactionDto::s_destAccountField = "DestAccount";
+QString TransactionDto::s_destExternalAccountField = "DestExternalAccount";
+QString TransactionDto::s_errorField = "Error";
+
 TransactionDto::TransactionDto(QObject *parent) : QObject(parent)
 {
 
@@ -89,4 +99,42 @@ void TransactionDto::setError(const QString &error)
 {
     m_error = error;
     emit errorChanged();
+}
+
+void TransactionDto::fromJsonObject(const QJsonObject &source)
+{
+    m_id = source[s_idField].toInt();
+    m_dateTime = source[s_dateTimeField].toString();
+    m_location = source[s_locationField].toString();
+    m_amount = source[s_amountField].toInt();
+    m_sourceAccount = source[s_sourceAccountField].toString();
+    m_currencyValue = source[s_currencyValueField].toInt();
+    m_destAccount = source[s_destAccountField].toString();
+    m_destExternalAccount = source[s_destExternalAccountField].toString();
+    m_error = source[s_errorField].toString();
+}
+
+QJsonObject TransactionDto::toJsonObject() const
+{
+    QJsonObject destination;
+    destination.insert(s_idField, m_id);
+    destination.insert(s_dateTimeField, m_dateTime);
+    destination.insert(s_locationField, m_location);
+    destination.insert(s_amountField, m_amount);
+    destination.insert(s_sourceAccountField, m_sourceAccount);
+    destination.insert(s_currencyValueField, m_currencyValue);
+    destination.insert(s_destAccountField, m_destAccount);
+    destination.insert(s_destExternalAccountField, m_destExternalAccount);
+    destination.insert(s_errorField, m_error);
+    return destination;
+}
+QString TransactionDto::destExternalAccount() const
+{
+    return m_destExternalAccount;
+}
+
+void TransactionDto::setDestExternalAccount(const QString &destExternalAccount)
+{
+    m_destExternalAccount = destExternalAccount;
+    emit destExternalAccountChanged();
 }
