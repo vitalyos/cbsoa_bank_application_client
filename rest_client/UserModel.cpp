@@ -115,7 +115,7 @@ void UserModel::parseUpdateResponse(QNetworkReply *response)
 {
     QByteArray data = response->readAll();
     qDebug () << "updateResponse:" << data;
-//    emit userListRequired();
+    emit userListRequired();
 }
 
 void UserModel::parseDeleteResponse(QNetworkReply *response)
