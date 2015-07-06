@@ -10,7 +10,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class TransactionDto;
 
-using TransactionList = QList<TransactionDto*>;
+using TransactionList = QList<QObject*>;
 
 class TransactionModel : public QObject
 {

@@ -14,10 +14,16 @@ ApplicationWindow {
     property int labelwidth: 120;
     property int fieldWidth: 180;
 
+    // user
     signal deleteUser (int id);
     signal refreshUserList ();
     signal createUser (UserDto user);
     signal updateUser (UserDto user);
+
+    // transaction
+    signal filterByIban (string iban);
+    signal getAllOrderedByAmount ();
+    signal performTransaction (TransactionDto aTrs);
 
     RowLayout {
         id: rows;
@@ -106,6 +112,7 @@ ApplicationWindow {
                 Layout.preferredHeight: 550;
                 Layout.preferredWidth: 300;
                 focus: true;
+                clip: true;
                 delegate: Component {
                     id: userDelegate;
                     Item {
@@ -187,6 +194,127 @@ ApplicationWindow {
             }
 
         }
+
+        ColumnLayout {
+            id: right;
+            Layout.alignment: Qt.AlignTop;
+            RowLayout {
+                Label {
+                    text: "sourceAccount";
+                    Layout.preferredWidth: labelwidth;
+                }
+                TextField {
+                    Layout.preferredWidth: fieldWidth;
+                    id: fieldSrc;
+                }
+            }
+
+            RowLayout {
+                Label {
+                    text: "destaccount";
+                    Layout.preferredWidth: labelwidth;
+                }
+                TextField {
+                    Layout.preferredWidth: fieldWidth;
+                    id: fieldDest;
+                }
+            }
+
+            RowLayout {
+                Label {
+                    text: "amount";
+                    Layout.preferredWidth: labelwidth;
+                }
+                TextField {
+                    Layout.preferredWidth: fieldWidth;
+                    id: fieldAmount;
+                    validator: IntValidator {
+                        id: amountValidator;
+                        bottom: 1;
+                    }
+                }
+            }
+
+            RowLayout {
+
+                Button {
+                    id: btnPerformTrx;
+                    text: "perform";
+//                    enabled: false;
+                    anchors.bottomMargin: 30;
+
+                    TransactionDto {
+                        id: creatingTrans;
+                        sourceAccount: fieldSrc.text;
+                        destAccount: fieldDest.text;
+                        amount: parseInt(fieldAmount.text);
+                    }
+
+                    onClicked: {
+                        root.performTransaction (creatingTrans);
+                    }
+                }
+
+                Button {
+                    id: refreshButtonTrList;
+                    text: "refresh";
+                    onClicked: {
+                        root.getAllOrderedByAmount ();
+                    }
+                }
+
+            }
+
+            RowLayout {
+                Label {
+                    text: "filter";
+                    Layout.preferredWidth: labelwidth;
+                }
+                TextField {
+                    Layout.preferredWidth: fieldWidth;
+                    id: fieldfilter;
+                    onTextChanged: {
+                        root.filterByIban (fieldfilter.text);
+                    }
+                }
+            }
+
+            ListView {
+                id: trxList;
+                model: transactionModel.transactions;
+                Layout.preferredHeight: 550;
+                Layout.preferredWidth: 300;
+                focus: true;
+                clip: true;
+                delegate: Component {
+                    ColumnLayout {
+                        Label {
+                            id: fromLabel;
+                            text: "from: " + model.modelData.sourceAccount;
+                        }
+                        Label {
+                            id: toLabel;
+                            text: "to: " + model.modelData.destAccount;
+                            visible: text.length > 4;
+                        }
+                        Label {
+                            id: toExtAccount;
+                            text: "to ext: " + model.modelData.destExternalAccount;
+                            visible: !toLabel.visible;
+                        }
+                        Label {
+                            id: amountLabel;
+                            text: "amount: " + model.modelData.amount;
+                        }
+                        Label {
+                            id: sep;
+                            text: "---------------------------------------";
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     UserController {
@@ -195,6 +323,14 @@ ApplicationWindow {
 
     UserModel {
         id: userModel;
+    }
+
+    TransactionModel {
+        id: transactionModel;
+    }
+
+    TransactionController {
+        id: transactionController;
     }
 
     Component.onCompleted: {
@@ -206,9 +342,6 @@ ApplicationWindow {
         root.refreshUserList.connect(userController.refreshUserList);
         userController.requireRefreshUserList.connect(userModel.userListRequired);
 
-        // refresh on startup
-        root.refreshUserList ();
-
         // update
         root.updateUser.connect(userController.updateUser);
         userController.requireUpdateUser.connect(userModel.updateUser);
@@ -216,5 +349,21 @@ ApplicationWindow {
         // delete user connections
         root.deleteUser.connect(userController.deleteUser);
         userController.requireDeleteUser.connect(userModel.deleteUser);
+
+        // perfrom transaction
+        root.performTransaction.connect(transactionModel.performTransaction);
+        transactionController.requirePerformTransaction.connect (transactionModel.performTransaction);
+
+        // get ordered by amount
+        root.getAllOrderedByAmount.connect(transactionController.getAllOrderedbyAmount);
+        transactionController.requireGetAllOrderedByAmont.connect(transactionModel.getAllOrderedByAmount);
+
+        // get filtered after iban
+        root.filterByIban.connect (transactionController.getAllFilteredByIban);
+        transactionController.requireGetAllFilteredByIban.connect (transactionModel.getAllFilteredByIban);
+
+        // refresh on startup
+        root.refreshUserList ();
+        root.getAllOrderedByAmount ();
     }
 }

@@ -9,22 +9,20 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QDebug>
+#include <QByteArray>
 
 #include "model/entity/TransactionDto.hpp"
 
-QString TransactionModel::s_resourceName = "http://localhost:51116/bank/api/transactions";
+QString TransactionModel::s_resourceName = "http://localhost:51116/taction";
 
 TransactionModel::TransactionModel(QObject *parent) : QObject(parent)
 {
     m_PerformManager = new QNetworkAccessManager(this);
     m_getListManager = new QNetworkAccessManager(this);
 
-    connect(m_PerformManager, &QNetworkAccessManager::finished,
-            this, &TransactionModel::parseTransactionPerform);
-    connect(m_getListManager, &QNetworkAccessManager::finished,
-            this, &TransactionModel::parseTransactionListResponse);
-    connect(this, &TransactionModel::refreshTransactionList,
-            this, &TransactionModel::getAllOrderedByAmount);
+    connect(m_PerformManager, &QNetworkAccessManager::finished, this, &TransactionModel::parseTransactionPerform);
+    connect(m_getListManager, &QNetworkAccessManager::finished, this, &TransactionModel::parseTransactionListResponse);
+    connect(this, &TransactionModel::refreshTransactionList, this, &TransactionModel::getAllOrderedByAmount);
 }
 
 TransactionModel::~TransactionModel()
@@ -66,7 +64,9 @@ void TransactionModel::getAllOrderedByAmount()
     QUrl url(s_resourceName);
     QNetworkRequest request;
     request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     m_getListManager->get(request);
+    qDebug () << "get all trx";
 }
 
 void TransactionModel::parseTransactionPerform(QNetworkReply *reply)
@@ -77,16 +77,18 @@ void TransactionModel::parseTransactionPerform(QNetworkReply *reply)
 
 void TransactionModel::parseTransactionListResponse(QNetworkReply *reply)
 {
-    auto data = reply->readAll();
-    qDebug () << "getListResponse:" << reply->readAll();
+    QByteArray data = reply->readAll();
+    qDebug () << "getListResponse:" << data;
     TransactionList result;
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(data, &error);
+    qDebug () << error.errorString();
     for (const auto & transacitionJson : doc.array())
     {
         TransactionDto * transaction = new TransactionDto(this);
         transaction->fromJsonObject(transacitionJson.toObject());
         result << transaction;
     }
+    qDebug () << result;
     setTransactions(QVariant::fromValue(result));
 }

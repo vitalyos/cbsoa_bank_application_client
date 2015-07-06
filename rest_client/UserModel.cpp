@@ -11,7 +11,7 @@
 #include <QByteArray>
 #include <QJsonParseError>
 
-QString UserModel::s_resourceName = "http://localhost:51116/bank/api/users";
+QString UserModel::s_resourceName = "http://localhost:51116/users";
 
 UserModel::UserModel(QObject *parent) : QObject(parent)
 {
