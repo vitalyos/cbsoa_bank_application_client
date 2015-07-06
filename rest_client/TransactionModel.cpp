@@ -3,6 +3,14 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QUrl>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+#include <QDebug>
+
+#include "model/entity/TransactionDto.hpp"
 
 QString TransactionModel::s_resourceName = "http://localhost:51116/bank/api/transactions";
 
@@ -38,25 +46,47 @@ void TransactionModel::setTransactions(const QVariant &transactions)
 
 void TransactionModel::performTransaction(TransactionDto *aTransaction)
 {
-
+    QUrl url(s_resourceName);
+    QNetworkRequest request;
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    m_PerformManager->put(request, QJsonDocument(aTransaction->toJsonObject()).toJson());
 }
 
 void TransactionModel::getAllFilteredByIban(const QString &iban)
 {
-
+    QUrl url(s_resourceName + "/" + iban);
+    QNetworkRequest request;
+    request.setUrl(url);
+    m_getListManager->get(request);
 }
 
 void TransactionModel::getAllOrderedByAmount()
 {
-
+    QUrl url(s_resourceName);
+    QNetworkRequest request;
+    request.setUrl(url);
+    m_getListManager->get(request);
 }
 
 void TransactionModel::parseTransactionPerform(QNetworkReply *reply)
 {
-
+    qDebug () << "perform response:" << reply->readAll();
+    emit refreshTransactionList();
 }
 
 void TransactionModel::parseTransactionListResponse(QNetworkReply *reply)
 {
-
+    auto data = reply->readAll();
+    qDebug () << "getListResponse:" << reply->readAll();
+    TransactionList result;
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
+    for (const auto & transacitionJson : doc.array())
+    {
+        TransactionDto * transaction = new TransactionDto(this);
+        transaction->fromJsonObject(transacitionJson.toObject());
+        result << transaction;
+    }
+    setTransactions(QVariant::fromValue(result));
 }

@@ -69,12 +69,12 @@ void TransactionDto::setSourceAccount(const QString &sourceAccount)
     emit sourceAccountChanged();
 }
 
-quint32 TransactionDto::currencyValue() const
+qint32 TransactionDto::currencyValue() const
 {
     return m_currencyValue;
 }
 
-void TransactionDto::setCurrencyValue(const quint32 &currencyValue)
+void TransactionDto::setCurrencyValue(const qint32 &currencyValue)
 {
     m_currencyValue = currencyValue;
     emit currencyValueChanged();

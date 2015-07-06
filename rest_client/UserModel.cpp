@@ -94,7 +94,7 @@ void UserModel::parseGetAllResponse(QNetworkReply *response)
         result << user;
     }
 
-    setUsers(qVariantFromValue(result));
+    setUsers(QVariant::fromValue(result));
 }
 
 void UserModel::parseGetByIdResponse(QNetworkReply *response)

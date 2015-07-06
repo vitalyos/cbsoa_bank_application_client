@@ -36,8 +36,8 @@ public:
     QString sourceAccount() const;
     void setSourceAccount(const QString &sourceAccount);
 
-    quint32 currencyValue() const;
-    void setCurrencyValue(const quint32 &currencyValue);
+    qint32 currencyValue() const;
+    void setCurrencyValue(const qint32 &currencyValue);
 
     QString destAccount() const;
     void setDestAccount(const QString &destAccount);
@@ -57,7 +57,7 @@ private:
     QString m_location;
     qint32 m_amount;
     QString m_sourceAccount;
-    quint32 m_currencyValue;
+    qint32 m_currencyValue;
     QString m_destAccount;
     QString m_destExternalAccount;
     QString m_error;
