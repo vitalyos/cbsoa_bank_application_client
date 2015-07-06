@@ -1,2 +1,4 @@
-HEADERS += model/entity/UserDto.hpp
-SOURCES += model/entity/UserDto.cpp
+HEADERS += model/entity/UserDto.hpp \
+    $$PWD/TransactionDto.hpp
+SOURCES += model/entity/UserDto.cpp \
+    $$PWD/TransactionDto.cpp
